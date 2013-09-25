@@ -77,26 +77,26 @@ Napr: ::
 3 typy premenných:
 """"""""""""""""""
 
-**Superglobálne*
+**Superglobálne**
 
 Sú to predefinované premenné v PHP, ktoré môžu byť sprístupnené z akejkoľvek funkcie, triedy alebo súboru.
 Sú to: 
-   * $GLOBALS
-   * $_SERVER
-   * $_REQUEST
-   * $_POST
-   * $_GET
-   * $_FILES
-   * $_ENV
-   * $_COOKIE
-   * $_SESSION
+* $GLOBALS
+* $_SERVER
+* $_REQUEST
+* $_POST
+* $_GET
+* $_FILES
+* $_ENV
+* $_COOKIE
+* $_SESSION
 
-**Globálne*
+**Globálne**
 
 Sú to premenné, ktoré sú deklarované mimo funckií alebo deklarované pomocou slova global vo vnútri funkcií. 
 Všetky globálne premenné sú dostupné v $GLOBALS. 
 
-**Lokálne*
+**Lokálne**
 
 Premenné deklarované vo vnútri funkcií.
 
@@ -107,9 +107,9 @@ Polia
 Polia v PHP využívajú kľúče a k nim priradené hodnoty (podobne ako Map v Jave).
 K tomuto poľu sa môžeme chovať ako k obyčajnému poľu ku ktorému priradzujeme hodnoty: ::
 
-   $pole = array ("PHP","MySQL","Apache");	//vytvoríme nové pole s troma prvkami
-   $pole[] = 13;							//pridávame nový prvok na koniec poľa
-   $pole[0] = "HTML";						//prepisujeme prvok na prvom mieste
+   $pole = array ("PHP","MySQL","Apache"); //vytvoríme nové pole s troma prvkami
+   $pole[] = 13;					//pridávame nový prvok na koniec poľa
+   $pole[0] = "HTML";			//prepisujeme prvok na prvom mieste
 
 alebo ako k mape (napr pri slovníku): ::
 
@@ -131,11 +131,11 @@ Funkcie
 
 Pri vytváraní vlastných funkcií sa používa následovná syntax ::
 
-function napis($meno, $priezvisko)
-{
-echo "$meno";
-echo "$priezvisko";
-}
+   function napis($meno, $priezvisko)
+   {
+   echo "$meno";
+   echo "$priezvisko";
+   }
 
 Funkcia môže obsahovať vstupné argumenty pričom ich počeť môže byť ľobovolný (aj nula).
 
