@@ -59,14 +59,3 @@ Základné informácie o premenných:
    * názov premennej sa môže začínať len písmenom abecedy alebo "podčiarkou" ("_")
    * väčšinou je ku premennej priradená hodnota ale dá sa priradiť aj referencia na inú premennu použitím "&"
 
------
-Links
------
-
-* `Sphinx <http://sphinx.pocoo.org>`_
-* `Sphinx tutorial <http://sphinx.pocoo.org/tutorial.html>`_
-* `reStructuredText Primer <http://sphinx.pocoo.org/rest.html#rst-primer>`_
-* `Quick reStructuredText reference <http://docutils.sourceforge.net/docs/user/rst/quickref.html>`_ 
-* `Sphinx documentation <http://sphinx.pocoo.org/contents.html>`_
-* `rst2pdf (generates PDF from reStructuredText) <http://code.google.com/p/rst2pdf/>`_
-
