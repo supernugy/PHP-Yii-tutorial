@@ -82,7 +82,6 @@ Napr: ::
 Sú to predefinované premenné v PHP, ktoré môžu byť sprístupnené z akejkoľvek funkcie, triedy alebo súboru
 
 Sú to: 
-
 * $GLOBALS
 * $_SERVER
 * $_REQUEST
