@@ -53,11 +53,11 @@ Premenné
 ^^^^^^^^
 
 Základné informácie o premenných:
-* premenné sú v php skriptoch reprezentované znakom $ pred názvom premennej.
-* nedeklarujeme typ premennej
-* nazvy premenných sú case-sensitive
-* názov premennej sa môže začínať len písmenom abecedy alebo "podčiarkou" ("_")
-* väčšinou je ku premennej priradená hodnota ale dá sa priradiť aj referencia na inú premennu použitím "&"
+   * premenné sú v php skriptoch reprezentované znakom $ pred názvom premennej.
+   * nedeklarujeme typ premennej
+   * nazvy premenných sú case-sensitive
+   * názov premennej sa môže začínať len písmenom abecedy alebo "podčiarkou" ("_")
+   * väčšinou je ku premennej priradená hodnota ale dá sa priradiť aj referencia na inú premennu použitím "&"
 
 -----
 Links
