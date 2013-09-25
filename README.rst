@@ -12,7 +12,7 @@ PHP je open-source skriptovací programovací jazyk, ktorý umožňuje procedur�
 alebo objektovo orientované programovanie.
 Využíva sa najmä na programovanie klient-server aplikácii na strane servera a 
 programovanie interaktívnych dynamických www stránok a aplikácií.
-Dá povedať, že skript napísaný v PHP je uložený na strane servera a klient, 
+Dá sa povedať, že skript napísaný v PHP je uložený na strane servera a klient, 
 ktorý ho volá, dostane ako odpoveď klasickú statickú (X)HTML stránku.
 
 Napríklad:
@@ -44,9 +44,9 @@ Server stránku spracuje a keď si zobrazíte zdrojový kód v prehliadači, uvi
 Deklarace PHP skriptu
 ^^^^^^^^^^^^^^^^^^^^^
 
-PHP skript sa delkaruje pomocou <?php nějaký PHP skript ?> ako to môžeme vidieť aj na
+PHP skript sa delkaruje pomocou ``<?php nějaký PHP skript ?>`` ako to môžeme vidieť aj na
 predošlom príklade. Tento spôsob delkarácie je najpoužívaniejší ale dá sa to robit 
-aj pomocou <? nějaký PHP skript ?>.
+aj pomocou ``<? nějaký PHP skript ?>``.
 
 ^^^^^^^^
 Premenné
@@ -79,8 +79,10 @@ Napr: ::
 
 **Superglobálne**
 
-Sú to predefinované premenné v PHP, ktoré môžu byť sprístupnené z akejkoľvek funkcie, triedy alebo súboru.
+Sú to predefinované premenné v PHP, ktoré môžu byť sprístupnené z akejkoľvek funkcie, triedy alebo súboru
+
 Sú to: 
+
 * $GLOBALS
 * $_SERVER
 * $_REQUEST
