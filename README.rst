@@ -210,6 +210,7 @@ Generovanie kodu
 ^^^^^^^^^^^^^^^^
 
 Kod je potrebne generovat v cmd/terminali, následovným spôsobom: ::
+
    php yii/framework/yiic.php webapp brmbrm
 
 Parametre príkazu sú ``<php alebo cesta k php.exe> <cesta ku yiic.php> <webapp> <miesto vygenerovania kodu>``
