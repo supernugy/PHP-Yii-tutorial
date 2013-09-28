@@ -39,6 +39,12 @@ Server stránku spracuje a keď si zobrazíte zdrojový kód v prehliadači, uvi
     </body>
 
    </html>
+   
+^^^^^^^^^^^^^^
+Inštalácia PHP
+^^^^^^^^^^^^^^
+
+`PHP dowload <http://windows.php.net/download/>`_
 
 ^^^^^^^^^^^^^^^^^^^^^
 Deklarace PHP skriptu
@@ -184,3 +190,16 @@ Controller môžeme chápať ako spojovníka s ktorým komunikuje model aj view.
 drží cely systém pohromade a komponenty prepojuje
 
 Táto architektúra sa používa vo webových aplikáciach.
+
+
+-------------
+Yii framework
+-------------
+
+Yii (skratka Yes it is!, vyslovuje sa [ji:]) je postavené na filozofii Convention over Configuration, čo znamená, že máte k dispozícií stavebné bloky, 
+ktoré sa správajú tak, ako by ste od nich čakali (t.j. konvenčne) a iba ak chcete špecifické správanie, musíte ich dodatočne konfigurovať. 
+V ideálnom prípade vyskladáte z týchto blokov celú aplikáciu s minimálnymi zásahmi do ich konfigurácie.
+
+Yii ide ešte ďalej a jeho hlavnou vlastnosťou je generátor kódu, vďaka ktorému stačí navrhnúť schému databázy a po pár kliknutiach a trocha úsilí máte 
+vygenerovanú skoro celú aplikáciu.
+
