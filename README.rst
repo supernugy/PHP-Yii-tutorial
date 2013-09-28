@@ -196,10 +196,21 @@ Táto architektúra sa používa vo webových aplikáciach.
 Yii framework
 -------------
 
-Yii (skratka Yes it is!, vyslovuje sa [ji:]) je postavené na filozofii Convention over Configuration, čo znamená, že máte k dispozícií stavebné bloky, 
+Yii (skratka Yes it is!) je postavené na filozofii Convention over Configuration, čo znamená, že máte k dispozícií stavebné bloky, 
 ktoré sa správajú tak, ako by ste od nich čakali (t.j. konvenčne) a iba ak chcete špecifické správanie, musíte ich dodatočne konfigurovať. 
 V ideálnom prípade vyskladáte z týchto blokov celú aplikáciu s minimálnymi zásahmi do ich konfigurácie.
 
-Yii ide ešte ďalej a jeho hlavnou vlastnosťou je generátor kódu, vďaka ktorému stačí navrhnúť schému databázy a po pár kliknutiach a trocha úsilí máte 
+Veľkou výhodou Yii frameworku je generátor kódu, vďaka ktorému stačí navrhnúť schému databázy a po pár kliknutiach a trocha úsilí máte 
 vygenerovanú skoro celú aplikáciu.
+
+**Link na stiahnutie:** `Yii dowload <http://www.yiiframework.com/download/>`_
+
+^^^^^^^^^^^^^^^^
+Generovanie kodu
+^^^^^^^^^^^^^^^^
+
+Kod je potrebne generovat v cmd/terminali, následovným spôsobom: ::
+   php yii/framework/yiic.php webapp brmbrm
+
+Parametre príkazu sú ``<php alebo cesta k php.exe> <cesta ku yiic.php> <webapp> <miesto vygenerovania kodu>``
 
