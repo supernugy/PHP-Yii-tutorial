@@ -277,7 +277,7 @@ Generovanie kodu
 Gii (generátor kodu) nájdeme na adrese `<http://localhost/test_app/index.php/gii>`_, kde treba zadať zvolené heslo.
 Následne sa preklikneme do Model Generator. Tu si vygenerujeme modely zodpovedajúce tabuľkám našej db aj s prípadnými reláciami.
 Čiže ak máme v db tabuľku s názvom ``user`` tak ju napíšeme do kolonky ``Table Name`` klikneme na ``Preview``
-a potom ``Generate``. A máme model pre našu tabuľku. Ak máme viacero tabuliek ktoré chceme výužívať tak urobíme to
+a potom ``Generate``. A máme model pre našu tabuľku. Ak máme viacero tabuliek ktoré chceme využívať tak urobíme to
 isté aj pre ne. 
 
 ^^^^^^^^^^^^^^^^^^^
@@ -289,32 +289,32 @@ uvidíme mnoho funkcií ktorých názov sa začína na ``action`` ako napríklad
 ``actionLogin()``. ::
 
    public function actionLogin()
-	{
-		$model=new LoginForm;
+   {
+      $model=new LoginForm;
 
-		// if it is ajax validation request
-		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
+      // if it is ajax validation request
+      if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
+      {
+         echo CActiveForm::validate($model);
+         Yii::app()->end();
+      }
 
-		// collect user input data
-		if(isset($_POST['LoginForm']))
-		{
-			$model->attributes=$_POST['LoginForm'];
-			// validate user input and redirect to the previous page if valid
-			if($model->validate() && $model->login())
-				$this->redirect(Yii::app()->user->returnUrl);
-		}
-		// display the login form
-		$this->render('login',array('model'=>$model));
-	}
+      // collect user input data
+      if(isset($_POST['LoginForm']))
+      {
+         $model->attributes=$_POST['LoginForm'];
+         // validate user input and redirect to the previous page if valid
+         if($model->validate() && $model->login())
+            $this->redirect(Yii::app()->user->returnUrl);
+      }
+      // display the login form
+      $this->render('login',array('model'=>$model));
+   }
 
 Tieto akcie tvoria základ controllera a jednotlivé akcie sa vykonajú len ak
 užívateľ zadá konkretnu url. Napríklad ``localhost/index.php/site/login`` 
 kde ``site`` hovorí aký controller sa má použiť (može byť ich aj viac) a za
-ním sa nachádza akcia ktorá sa má vykonať. Tu je to konkrétne actionLogin().
+ním sa nachádza akcia ktorá sa má vykonať. Tu je to konkrétne ``actionLogin()``.
 
 Jednou z najzákladnejších a najpoužívanejších metod v controlleri je 
 ``render(string $view, array $data=NULL)``, kde
@@ -560,8 +560,6 @@ Na overenie identity uživateľov sa používa trieda UserIdentity, ktorá sa na
       
       public $email;
       private $_id;
-      const ERROR_STATUS_BANNED = 4;
-      const ERROR_STATUS_PENDING = 3;
       
       public function __construct($email,$password)
       {
@@ -809,7 +807,7 @@ menších úloh:
    * vytvoriť pohľad registrácie
    * vytvoriť link na túto stránku
 
-Poznámky: pri vytvárani novéhu usera použijeme metodu ``save()`` namiesto ``update()``.
+Poznámky: pri vytvárani nového usera použijeme metodu ``save()`` namiesto ``update()``.
 
 
 
