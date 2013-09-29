@@ -257,15 +257,46 @@ aj "Gii" (modul generátora kódu) a nastaviť prístupové heslo k nemu. Pre Gi
 taktiež treba vypnnúť filter IP adries, ktoré k nemu môžu pristupovať 
 parametrom ``'ipFilters'=>array('*'),`` ak k nemu nepristupujete iba z localhostu.
 
+Nakoniec si nastavíme základného UrlManagera lebo defaultné ulr sú nechutné. ::
+
+   ...
+   'urlManager'=>array(
+            'urlFormat'=>'path',
+               'rules'=>array(
+                   'pattern1'=>'route1',
+                   'pattern2'=>'route2',
+                   'pattern3'=>'route3',
+               ),
+         ),
+   ...
+
 ^^^^^^^^^^^^^^^^
 Generovanie kodu
 ^^^^^^^^^^^^^^^^
 
-Gii (generátor kodu) nájdeme na adrese `<http://localhost/test_app/index.php?r=gii>`_, kde treba zadať zvolené heslo.
+Gii (generátor kodu) nájdeme na adrese `<http://localhost/test_app/index.php/gii>`_, kde treba zadať zvolené heslo.
 Následne sa preklikneme do Model Generator. Tu si vygenerujeme modely zodpovedajúce tabuľkám našej db aj s prípadnými reláciami.
-Čiže ak máme v db tabuľku s názvom ``users`` tak ju napíšeme do kolonky ``Table Name`` klikneme na ``Preview``
+Čiže ak máme v db tabuľku s názvom ``user`` tak ju napíšeme do kolonky ``Table Name`` klikneme na ``Preview``
 a potom ``Generate``. A máme model pre našu tabuľku. Ak máme viacero tabuliek ktoré chceme výužívať tak urobíme to
 isté aj pre ne. 
+
+^^^^^^^^^^^^^^^^^^^
+Základy Controllera
+^^^^^^^^^^^^^^^^^^^
+
+Keď si otvoríme SiteController.php v ``/protected/controllers``, tak vo vnútri
+uvidíme mnoho funkcií ktorých názov sa začína na ``action`` ako napríklad 
+``actionLogin()``. 
+
+Tieto akcie tvoria základ controllera a jednotlivé akcie sa vykonajú len ak
+užívateľ zadá konkretnu url. Napríklad ``localhost/index.php/site/login`` 
+kde ``site`` hovorí aký controller sa má použiť (može byť ich aj viac) a za
+ním sa nachádza akcia ktorá sa má vykonať. Tu je to konkrátne actionLogin().
+
+Jednou z najzákladnejších a najpoužívanejších metod v controlleri je 
+``render(string $view, array $data=NULL)``, kde
+``$view`` je pohľad (view), ktorý sa zobrazí v prehliadači a ``$data`` su dáta ktoré sa 
+posielajú do pohľadu (napr. formulár).
 
 ^^^^^^^^^^^^^^^^^
 Model používateľa
@@ -390,6 +421,12 @@ Ako prvý upravíme model používateľa - protected/models/User.php. ::
          return ($this->getHash($password) == $this->_oldPassword);
       }
    }
+
+^^^^^^^^^^^^^^^
+Site Controller
+^^^^^^^^^^^^^^^
+
+
 
 ^^^^^^^^^^^^^^^^^^^
 Prihlasovanie v Yii
