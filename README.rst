@@ -643,40 +643,8 @@ Na tento účel si vytvoríme novú stranku, kde si budeme moct zmeniť osobné 
 Vytvorenie akcie
 """"""""""""""""
 
-V ``SiteController.php`` si vytvoríme novú akciu tým že tam dodáme: ::
-
-   public function actionChangeUserInfo()
-	{
-		$model = new UserInfoForm;
-      $currentUser = User::model()->findByAttributes(array('id'=>Yii::app()->user->getId()));
-      
-      //load existin data
-      $model->email = $currentUser->email;
-      $model->first_name = $currentUser->first_name;
-		$model->last_name = $currentUser->last_name;
-      
-      if(isset($_POST['UserInfoForm']))
-		{
-			$model->attributes=$_POST['UserInfoForm'];
-			$currentUser->email = $model->email;
-         $currentUser->password = $model->password;
-         $currentUser->first_name = $model->first_name;
-         $currentUser->last_name = $model->last_name;
-         
-			if($currentUser->update())
-			{
-				Yii::app()->user->setFlash('change_info','User information changed!');
-			}
-			else 
-			{
-				Yii::app()->user->setFlash('change_info','ERROR');
-			}
-		}
-      
-      $this->render('changeUserInfo',array('model'=>$model));
-	}
-
-Ako môžeme vidieť budeme potrebovať nový formulár aj pohľad. Začneme formulárom.
+Pred tým než budeme moct vytvoriť nový akciu budeme potrebovať nový formulár 
+aj pohľad. Začneme formulárom.
 
 Vytvoríme si ``UserInfoForm.php`` s kodom: ::
 
@@ -688,11 +656,6 @@ Vytvoríme si ``UserInfoForm.php`` s kodom: ::
       public $first_name;
       public $last_name;
 
-      /**
-       * Declares the validation rules.
-       * The rules state that username and password are required,
-       * and password needs to be authenticated.
-       */
       public function rules()
       {
          return array(
@@ -770,7 +733,51 @@ Teraz si vytvoríme pohľad ``changeUserInfo.php``: ::
    <?php $this->endWidget(); ?>
    </div><!-- form -->
 
-A nakoniec aby sme nemuseli stale písať ručne url, tak si vytvoríme link na hlavnom menu.
+V ``SiteController.php`` si vytvoríme novú akciu tým že tam dodáme: ::
+
+   public function actionChangeUserInfo()
+   {
+      $model = new UserInfoForm;
+      $currentUser = User::model()->findByAttributes(array('id'=>Yii::app()->user->getId()));
+      
+      if($currentUser == null)
+      {
+         $this->redirect(array('site/index'));
+         return;
+      }
+      
+      //load existin data
+      $model->email = $currentUser->email;
+      $model->first_name = $currentUser->first_name;
+      $model->last_name = $currentUser->last_name;
+      
+      if(isset($_POST['UserInfoForm']))
+      {
+         $model->attributes=$_POST['UserInfoForm'];
+         $currentUser->email = $model->email;
+         $currentUser->password = $model->password;
+         $currentUser->first_name = $model->first_name;
+         $currentUser->last_name = $model->last_name;
+         
+         if($currentUser->update())
+         {
+            Yii::app()->user->setFlash('change_info','User information changed!');
+         }
+         else 
+         {
+            Yii::app()->user->setFlash('change_info','ERROR');
+         }
+      }
+      
+      $this->render('changeUserInfo',array('model'=>$model));
+   }
+
+Premenná ``$currentUser`` je vlastne User model ktorý má v sebe info o teraz prihlásenom
+užívateľovi. Následne sa jeho údaje vložia do formulára ktorý sa pošle pohľady.
+Vďaka tomu uz budeme mat vo formulári existujúce data ktoré si možeme prezrieť a upraviť.
+Po submitnutí sa nové data ulozia do premennej ``$currentUser`` a pouzijeme metodu ``update()``.
+
+Nakoniec aby sme nemuseli stale písať ručne url, tak si vytvoríme link na hlavnom menu.
 
 Čiže v layoutu ``\protected\views\layouts\main.php`` si najdeme tento kod: ::
 
@@ -789,4 +796,20 @@ A nakoniec aby sme nemuseli stale písať ručne url, tak si vytvoríme link na 
 Tento kus kodu vykresluje hlavne menu a položky v ňom. Tu za 'Contact' pridáme riadok 
 ``array('label'=>'Change Info', 'url'=>array('/site/changeUserInfo')),`` čím pridáme 
 nový button ktorý sa odkazuje na našu novú akciu.
+
+-----
+Úloha
+-----
+
+Úlohou je vytvoriť funkčnú stránku registrácie. Táto úloha pozostáva z viacerých 
+menších úloh:
+
+   * vytvoriť registračný formulár
+   * vytvoriť akciu registrácie, kde sa nový user uloží do db
+   * vytvoriť pohľad registrácie
+   * vytvoriť link na túto stránku
+
+Poznámky: pri vytvárani novéhu usera použijeme metodu ``save()`` namiesto ``update()``.
+
+
 
