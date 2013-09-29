@@ -261,8 +261,128 @@ parametrom ``'ipFilters'=>array('*'),`` ak k nemu nepristupujete iba z localhost
 Generovanie kodu
 ^^^^^^^^^^^^^^^^
 
-Gii (generátor kodu) nájdete na adrese `<http://localhost/test_app/index.php?r=gii>`_ , kde treba zadať zvolené heslo.
+Gii (generátor kodu) nájdeme na adrese `<http://localhost/test_app/index.php?r=gii>`_, kde treba zadať zvolené heslo.
 Následne sa preklikneme do Model Generator. Tu si vygenerujeme modely zodpovedajúce tabuľkám našej db aj s prípadnými reláciami.
 Čiže ak máme v db tabuľku s názvom ``users`` tak ju napíšeme do kolonky ``Table Name`` klikneme na ``Preview``
 a potom ``Generate``. A máme model pre našu tabuľku. Ak máme viacero tabuliek ktoré chceme výužívať tak urobíme to
 isté aj pre ne.
+
+^^^^^^^^^^^^^^^^^
+Model používateľa
+^^^^^^^^^^^^^^^^^
+
+Ako prvý upravíme model používateľa - protected/models/User.php. ::
+
+   class User extends CActiveRecord
+   {
+
+      protected $_oldPassword;
+      protected $_fullName;
+
+      /**
+       * Returns the static model of the specified AR class.
+       * @param string $className active record class name.
+       * @return User the static model class
+       */
+      public static function model($className=__CLASS__)
+      {
+         return parent::model($className);
+      }
+
+      /**
+       * @return string the associated database table name
+       */
+      public function tableName()
+      {
+         return 'user';
+      }
+
+      /**
+       * @return array validation rules for model attributes.
+       */
+      public function rules()
+      {
+         // NOTE: you should only define rules for those attributes that
+         // will receive user inputs.
+         return array(
+            array('email, first_name, last_name, password', 'required'),
+            array('email', 'email'),
+            // The following rule is used by search().
+            // Removed password
+            array('id, email, first_name, last_name', 'safe', 'on'=>'search'),
+         );
+      }
+
+      /**
+       * @return array relational rules.
+       */
+      public function relations()
+      {
+         // NOTE: you may need to adjust the relation name and the related
+         // class name for the relations automatically generated below.
+         return array(
+         );
+      }
+
+      /**
+       * @return array customized attribute labels (name=>label)
+       */
+      public function attributeLabels()
+      {
+         return array(
+            'id' => 'ID',
+            'email' => 'Email',
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
+            'password' => 'Password',
+         );
+      }
+
+      /**
+       * Retrieves a list of models based on the current search/filter conditions.
+       * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+       */
+      public function search()
+      {
+         // Warning: Please modify the following code to remove attributes that
+         // should not be searched.
+
+         $criteria=new CDbCriteria;
+
+         $criteria->compare('id',$this->id);
+         $criteria->compare('email',$this->email,true);
+         $criteria->compare('first_name',$this->first_name,true);
+         $criteria->compare('last_name',$this->last_name,true);
+         $criteria->compare('password',$this->password,true);
+
+         return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+         ));
+      }
+      protected function getHash($password)
+      {
+         //Add you custom string here
+         return md5("supernugy is awesome" . $password);
+      }
+
+      function afterFind()
+      {
+         $this->_oldPassword = $this->password;
+         $this->password = '';
+         
+         $this->_fullName = $this->first_name.' '.$this->last_name;
+
+         return parent::afterFind();
+      }
+
+      function beforeSave()
+      {
+         if (!$this->password)
+            $this->password = $this->_oldPassword;
+         else
+            if ($this->_oldPassword != $this->password) $this->password = $this->getHash($this->password);
+
+         return parent::beforeSave();
+      }
+   }
+
