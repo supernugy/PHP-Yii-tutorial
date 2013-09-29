@@ -319,7 +319,7 @@ ním sa nachádza akcia ktorá sa má vykonať. Tu je to konkrétne actionLogin(
 Jednou z najzákladnejších a najpoužívanejších metod v controlleri je 
 ``render(string $view, array $data=NULL)``, kde
 ``$view`` je pohľad (view), ktorý sa zobrazí v prehliadači a ``$data`` su dáta ktoré sa 
-posielajú do pohľadu (napr. formulár).
+posielajú do pohľadu (napr. formulár). Táto metóda zobrazí daný pohľad.
 
 ^^^^^^^
 Pohľady
@@ -331,10 +331,14 @@ Delia sa na 2 druhy:
    * pohľady controllerov
 
 Nás budú zaujímať predovšetkým pohľady controllerov.
-Napríklad pohľad login.php sa zobrazí vtedy keď sa zavolá akcia login.
-V tomto pohľade je definovaný formulár prihlásenie, ktorý používa nejakú
+Napríklad pohľad ``login.php`` sa zobrazí vtedy keď sa zavolá akcia login.
+V tomto pohľade je definovaný formulár prihlásenia, ktorý používa nejakú
 záhadnú premennú ``$model``. Táto premenná je definovaná v controlleri v akcii login.
 Odtial bola poslaná do pohľadu spomínanou metodou ``render``.
+
+Mohli sme si všimnút, že keď sa menú stránka tak sa mení len určitá časť stránky. 
+Je to spôsobené tým, že všetky pohľady controllerov sa vykresľujú do nejakého 
+layoutu. V tomto prípade je to layout ``\protected\views\layouts\main.php``.
 
 """""""""
 Formuláre
@@ -409,22 +413,22 @@ Na konci každého formulára by mal byť submit button: ``echo CHtml::submitBut
 Po jeho stlačení sa opäť vykoná akcia ``actionLogin`` lenže s iným priebehom: ::
 
    if(isset($_POST['LoginForm']))
-		{
-			$model->attributes=$_POST['LoginForm'];
-			// validate user input and redirect to the previous page if valid
-			if($model->validate() && $model->login())
-				$this->redirect(Yii::app()->user->returnUrl);
-		}
+	{
+		$model->attributes=$_POST['LoginForm'];
+		// validate user input and redirect to the previous page if valid
+		if($model->validate() && $model->login())
+			$this->redirect(Yii::app()->user->returnUrl);
+	}
 
-Tento kod sa vykonáva ak sa v superglobálnej premennej $_POST nachádza dáta s indexom
+Tento kod sa vykonáva ak sa v superglobálnej premennej $_POST nachádzaju dáta s indexom
 'LoginForm' (presný názov triedy). Tento prípad nastane len po submitnutí formulára.
-No a vo vnutri ifu sa už môži pracovávať dáta (v tomto prípade login).
+No a vo vnutri ifu sa už môžu spracovávať dáta (v tomto prípade login).
 
 ^^^^^^^^^^^^^^^^^
 Model používateľa
 ^^^^^^^^^^^^^^^^^
 
-Ako prvý upravíme model používateľa - protected/models/User.php. ::
+Upravíme si vygenerovaný model používateľa - protected/models/User.php. ::
 
    class User extends CActiveRecord
    {
@@ -548,7 +552,7 @@ Ako prvý upravíme model používateľa - protected/models/User.php. ::
 Prihlasovanie v Yii
 ^^^^^^^^^^^^^^^^^^^
 
-Na overenie identity sa používa trieda UserIdentity, ktorá sa nachádza v 
+Na overenie identity uživateľov sa používa trieda UserIdentity, ktorá sa nachádza v 
 ``protected/components/UserIdentity.php`` ::
    
    class UserIdentity extends CUserIdentity
@@ -628,4 +632,161 @@ aby sa používal náš WebUser namiesto defaultej implementácie ::
 
 A teraz už len stačí dať do našej db skušobnéhu usera a skúsiť sa s ním prihlásiť.
 
+^^^^^^^^^^^^^^^^
+Práca s DB v Yii
+^^^^^^^^^^^^^^^^
+
+Na záver si ukážeme ako pracovať sa v Yii pracuje s databázou (čítanie a zapisovanie).
+Na tento účel si vytvoríme novú stranku, kde si budeme moct zmeniť osobné údaje.
+
+""""""""""""""""
+Vytvorenie akcie
+""""""""""""""""
+
+V ``SiteController.php`` si vytvoríme novú akciu tým že tam dodáme: ::
+
+   public function actionChangeUserInfo()
+	{
+		$model = new UserInfoForm;
+      $currentUser = User::model()->findByAttributes(array('id'=>Yii::app()->user->getId()));
+      
+      //load existin data
+      $model->email = $currentUser->email;
+      $model->first_name = $currentUser->first_name;
+		$model->last_name = $currentUser->last_name;
+      
+      if(isset($_POST['UserInfoForm']))
+		{
+			$model->attributes=$_POST['UserInfoForm'];
+			$currentUser->email = $model->email;
+         $currentUser->password = $model->password;
+         $currentUser->first_name = $model->first_name;
+         $currentUser->last_name = $model->last_name;
+         
+			if($currentUser->update())
+			{
+				Yii::app()->user->setFlash('change_info','User information changed!');
+			}
+			else 
+			{
+				Yii::app()->user->setFlash('change_info','ERROR');
+			}
+		}
+      
+      $this->render('changeUserInfo',array('model'=>$model));
+	}
+
+Ako môžeme vidieť budeme potrebovať nový formulár aj pohľad. Začneme formulárom.
+
+Vytvoríme si ``UserInfoForm.php`` s kodom: ::
+
+   <?php
+   class UserInfoForm extends CFormModel
+   {
+      public $email;
+      public $password;
+      public $first_name;
+      public $last_name;
+
+      /**
+       * Declares the validation rules.
+       * The rules state that username and password are required,
+       * and password needs to be authenticated.
+       */
+      public function rules()
+      {
+         return array(
+            // username and password are required
+            array('email, password, first_name, last_name', 'required'),
+         );
+      }
+
+      /**
+       * Declares attribute labels.
+       */
+      public function attributeLabels()
+      {
+         return array(
+            'password'=>'Password',
+            'email'=>'Email',
+            'first_name'=>'First Name',
+            'last_name'=>'Last Name',
+         );
+      }
+
+   }
+
+Teraz si vytvoríme pohľad ``changeUserInfo.php``: ::
+
+   <h1>Change user info</h1>
+
+   <div>
+       <?php 
+         if(Yii::app()->user->hasFlash('change_info'))
+         {
+            echo Yii::app()->user->getFlash('change_info');
+         }?>
+   </div>
+
+   <div class="form">
+   <?php $form=$this->beginWidget('CActiveForm', array(
+      'id'=>'login-form',
+      'enableClientValidation'=>true,
+      'clientOptions'=>array(
+         'validateOnSubmit'=>true,
+      ),
+   )); ?>
+
+      <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+      <div class="row">
+         <?php echo $form->labelEx($model,'email'); ?>
+         <?php echo $form->textField($model,'email'); ?>
+         <?php echo $form->error($model,'email'); ?>
+      </div>
+
+      <div class="row">
+         <?php echo $form->labelEx($model,'password'); ?>
+         <?php echo $form->passwordField($model,'password'); ?>
+         <?php echo $form->error($model,'password'); ?>
+      </div>
+
+      <div class="row">
+         <?php echo $form->labelEx($model,'first_name'); ?>
+         <?php echo $form->textField($model,'first_name'); ?>
+         <?php echo $form->error($model,'first_name'); ?>
+      </div>
+      
+      <div class="row">
+         <?php echo $form->labelEx($model,'last_name'); ?>
+         <?php echo $form->textField($model,'last_name'); ?>
+         <?php echo $form->error($model,'last_name'); ?>
+      </div>
+
+      <div class="row buttons">
+         <?php echo CHtml::submitButton('Login'); ?>
+      </div>
+
+   <?php $this->endWidget(); ?>
+   </div><!-- form -->
+
+A nakoniec aby sme nemuseli stale písať ručne url, tak si vytvoríme link na hlavnom menu.
+
+Čiže v layoutu ``\protected\views\layouts\main.php`` si najdeme tento kod: ::
+
+	<div id="mainmenu">
+		<?php $this->widget('zii.widgets.CMenu',array(
+			'items'=>array(
+				array('label'=>'Home', 'url'=>array('/site/index')),
+				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
+				array('label'=>'Contact', 'url'=>array('/site/contact')),
+				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+			),
+		)); ?>
+	</div><!-- mainmenu -->
+
+Tento kus kodu vykresluje hlavne menu a položky v ňom. Tu za 'Contact' pridáme riadok 
+``array('label'=>'Change Info', 'url'=>array('/site/changeUserInfo')),`` čím pridáme 
+nový button ktorý sa odkazuje na našu novú akciu.
 
