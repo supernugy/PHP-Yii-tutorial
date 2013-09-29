@@ -265,7 +265,7 @@ Gii (generátor kodu) nájdeme na adrese `<http://localhost/test_app/index.php?r
 Následne sa preklikneme do Model Generator. Tu si vygenerujeme modely zodpovedajúce tabuľkám našej db aj s prípadnými reláciami.
 Čiže ak máme v db tabuľku s názvom ``users`` tak ju napíšeme do kolonky ``Table Name`` klikneme na ``Preview``
 a potom ``Generate``. A máme model pre našu tabuľku. Ak máme viacero tabuliek ktoré chceme výužívať tak urobíme to
-isté aj pre ne.
+isté aj pre ne. 
 
 ^^^^^^^^^^^^^^^^^
 Model používateľa
@@ -384,5 +384,83 @@ Ako prvý upravíme model používateľa - protected/models/User.php. ::
 
          return parent::beforeSave();
       }
+         
+      public function matchesPassword($password)
+      {
+         return ($this->getHash($password) == $this->_oldPassword);
+      }
    }
+
+^^^^^^^^^^^^^^^^^^^
+Prihlasovanie v Yii
+^^^^^^^^^^^^^^^^^^^
+
+Na overenie identity sa používa trieda UserIdentity, ktorá sa nachádza v 
+``protected/components/UserIdentity.php`` ::
+   
+   class UserIdentity extends CUserIdentity
+   {
+      
+      public $email;
+      private $_id;
+      const ERROR_STATUS_BANNED = 4;
+      const ERROR_STATUS_PENDING = 3;
+      
+      public function __construct($email,$password)
+      {
+         $this->email = $email;
+         $this->password = $password;
+      }
+      
+      /**
+       * Authenticates a user.
+       * @return boolean whether authentication succeeds.
+       */
+      public function authenticate()
+      {
+         $u = User::model()->findByAttributes( array('email'=>$this->email) );
+         
+         if ( !$u )
+            $this->errorCode = self::ERROR_USERNAME_INVALID;
+         else if( !$u->matchesPassword($this->password) )
+            $this->errorCode = self::ERROR_PASSWORD_INVALID;
+         else 
+         {
+            $this->_id = $u->id;
+            $this->username = $this->email;
+            $this->errorCode = self::ERROR_NONE;
+         }
+         
+         return !$this->errorCode;
+      }
+      
+      public function getId()
+      {
+         return $this->_id;
+      }
+   }
+
+Ďalej by bolo dobré pridať triedu WebUser ``protected/components/WebUser.php`` 
+čo je špeciálna trieda, ktorej inštancia je globálne dostupná v aplikácii 
+cez Yii::App()->user. ::
+
+   class WebUser extends CWebUser {
+
+      protected $_model = null;
+
+      //Pokiaľ nie je načítaný model, loadne ho a vráti. V $this->id je vždy ID 
+      //prihláseného používateľa, ktoré keď chýba, metóda vracia prázdny model.
+      public function getModel()
+      {
+         if (!$this->_model)
+         {
+            if ($this->id) $this->_model = User::model()->findByPk($this->id);
+            else $this->_model = User::model();
+         }
+
+         return $this->_model;
+      }
+   }
+
+
 
