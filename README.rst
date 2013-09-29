@@ -357,7 +357,8 @@ zobrazoval že chce email. Toto neovplyvní samotnú implementáciu prihlasovani
 email kedže overovanie input dát sa deje mimo formulára.
 
 Keď už máme triedu formulára dokončenú tak musíme vytvoriť v controlleri vytvoriť
-jej inštanciu, napr: ``$model=new LoginForm``. Následne sa pošle to pohľadu ::
+jej inštanciu, napr: ``$model=new LoginForm``. Následne sa pošle to pohľadu v ktorom
+nás zaujíma prevažme kod ktorý vykresľuje formulár ::
 
    <?php $form=$this->beginWidget('CActiveForm', array(
       'id'=>'login-form',
@@ -401,8 +402,23 @@ prídáva 'Yii kompatibilitu' (čiže využívanie modelov a formulárov).
 Najdôležitejšia vec ktorú treba vedieť je ako funguje priradzovanie premenných.
 
 Napr. ``echo $form->textField($model,'username')`` zobrazí textové políčko, ktorého
-hodnota bude v controlleri priradená k premennej ``LoginForm`` (všimnite si, že
-sa všetky premenné zhodujú s premennými v LoginForm).
+hodnota bude v controlleri priradená k premennej ``username`` v ``LoginForm`` 
+(všimnite si, že sa všetky premenné zhodujú s premennými v LoginForm).
+
+Na konci každého formulára by mal byť submit button: ``echo CHtml::submitButton('Login')``.
+Po jeho stlačení sa opäť vykoná akcia ``actionLogin`` lenže s iným priebehom: ::
+
+   if(isset($_POST['LoginForm']))
+		{
+			$model->attributes=$_POST['LoginForm'];
+			// validate user input and redirect to the previous page if valid
+			if($model->validate() && $model->login())
+				$this->redirect(Yii::app()->user->returnUrl);
+		}
+
+Tento kod sa vykonáva ak sa v superglobálnej premennej $_POST nachádza dáta s indexom
+'LoginForm' (presný názov triedy). Tento prípad nastane len po submitnutí formulára.
+No a vo vnutri ifu sa už môži pracovávať dáta (v tomto prípade login).
 
 ^^^^^^^^^^^^^^^^^
 Model používateľa
