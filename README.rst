@@ -286,7 +286,30 @@ Základy Controllera
 
 Keď si otvoríme SiteController.php v ``/protected/controllers``, tak vo vnútri
 uvidíme mnoho funkcií ktorých názov sa začína na ``action`` ako napríklad 
-``actionLogin()``. 
+``actionLogin()``. ::
+
+   public function actionLogin()
+	{
+		$model=new LoginForm;
+
+		// if it is ajax validation request
+		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+
+		// collect user input data
+		if(isset($_POST['LoginForm']))
+		{
+			$model->attributes=$_POST['LoginForm'];
+			// validate user input and redirect to the previous page if valid
+			if($model->validate() && $model->login())
+				$this->redirect(Yii::app()->user->returnUrl);
+		}
+		// display the login form
+		$this->render('login',array('model'=>$model));
+	}
 
 Tieto akcie tvoria základ controllera a jednotlivé akcie sa vykonajú len ak
 užívateľ zadá konkretnu url. Napríklad ``localhost/index.php/site/login`` 
@@ -324,6 +347,62 @@ V tejto triede sú dôležité:
    * public premenné do ktorých sa budú ukladať informácie dané userom
    * pravidlá (rules)
    * attributeLabels (ok tak toto nie je až také dôležite, ale je dobre to mať)
+
+Keď si otvoríme login stránku tak uvidíme, že od nás chce username. Lenže my sa 
+neskôr budeme chciet prihlasovať cez email, tak v tejto triede by sme mali
+zmeniť všetky vyskyty username na email. Lenže mnohí programátori sú lenivý 
+a nevadí im menšia nekonzistencie kodu, preto môžeme urobiť malý 'hack' a to
+tým že ku ``attributeLabels`` pridáme ``'username'=>'Email',`` aby nám formulár
+zobrazoval že chce email. Toto neovplyvní samotnú implementáciu prihlasovania cez 
+email kedže overovanie input dát sa deje mimo formulára.
+
+Keď už máme triedu formulára dokončenú tak musíme vytvoriť v controlleri vytvoriť
+jej inštanciu, napr: ``$model=new LoginForm``. Následne sa pošle to pohľadu ::
+
+   <?php $form=$this->beginWidget('CActiveForm', array(
+      'id'=>'login-form',
+      'enableClientValidation'=>true,
+      'clientOptions'=>array(
+         'validateOnSubmit'=>true,
+      ),
+   )); ?>
+
+      <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+      <div class="row">
+         <?php echo $form->labelEx($model,'username'); ?>
+         <?php echo $form->textField($model,'username'); ?>
+         <?php echo $form->error($model,'username'); ?>
+      </div>
+
+      <div class="row">
+         <?php echo $form->labelEx($model,'password'); ?>
+         <?php echo $form->passwordField($model,'password'); ?>
+         <?php echo $form->error($model,'password'); ?>
+         <p class="hint">
+            Hint: You may login with <kbd>demo</kbd>/<kbd>demo</kbd> or <kbd>admin</kbd>/<kbd>admin</kbd>.
+         </p>
+      </div>
+
+      <div class="row rememberMe">
+         <?php echo $form->checkBox($model,'rememberMe'); ?>
+         <?php echo $form->label($model,'rememberMe'); ?>
+         <?php echo $form->error($model,'rememberMe'); ?>
+      </div>
+
+      <div class="row buttons">
+         <?php echo CHtml::submitButton('Login'); ?>
+      </div>
+
+   <?php $this->endWidget(); ?>
+
+Používame widget ``CActiveForm``, ktorý sa správa ako obýčajný html form lenže
+prídáva 'Yii kompatibilitu' (čiže využívanie modelov a formulárov). 
+Najdôležitejšia vec ktorú treba vedieť je ako funguje priradzovanie premenných.
+
+Napr. ``echo $form->textField($model,'username')`` zobrazí textové políčko, ktorého
+hodnota bude v controlleri priradená k premennej ``LoginForm`` (všimnite si, že
+sa všetky premenné zhodujú s premennými v LoginForm).
 
 ^^^^^^^^^^^^^^^^^
 Model používateľa
