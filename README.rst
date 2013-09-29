@@ -291,12 +291,39 @@ uvidíme mnoho funkcií ktorých názov sa začína na ``action`` ako napríklad
 Tieto akcie tvoria základ controllera a jednotlivé akcie sa vykonajú len ak
 užívateľ zadá konkretnu url. Napríklad ``localhost/index.php/site/login`` 
 kde ``site`` hovorí aký controller sa má použiť (može byť ich aj viac) a za
-ním sa nachádza akcia ktorá sa má vykonať. Tu je to konkrátne actionLogin().
+ním sa nachádza akcia ktorá sa má vykonať. Tu je to konkrétne actionLogin().
 
 Jednou z najzákladnejších a najpoužívanejších metod v controlleri je 
 ``render(string $view, array $data=NULL)``, kde
 ``$view`` je pohľad (view), ktorý sa zobrazí v prehliadači a ``$data`` su dáta ktoré sa 
 posielajú do pohľadu (napr. formulár).
+
+^^^^^^^
+Pohľady
+^^^^^^^
+
+Pohľady sa nachádzaju v ``/protected/views``. 
+Delia sa na 2 druhy:
+   * layouty
+   * pohľady controllerov
+
+Nás budú zaujímať predovšetkým pohľady controllerov.
+Napríklad pohľad login.php sa zobrazí vtedy keď sa zavolá akcia login.
+V tomto pohľade je definovaný formulár prihlásenie, ktorý používa nejakú
+záhadnú premennú ``$model``. Táto premenná je definovaná v controlleri v akcii login.
+Odtial bola poslaná do pohľadu spomínanou metodou ``render``.
+
+"""""""""
+Formuláre
+"""""""""
+
+Opäť zoberme ako príklad pohľad ``login.php``. Pri tvorbe formulárov budeme musieť
+vytvoriť model formulára ako napr. ``\protected\models\LoginForm.php``.
+
+V tejto triede sú dôležité:
+   * public premenné do ktorých sa budú ukladať informácie dané userom
+   * pravidlá (rules)
+   * attributeLabels (ok tak toto nie je až také dôležite, ale je dobre to mať)
 
 ^^^^^^^^^^^^^^^^^
 Model používateľa
@@ -421,12 +448,6 @@ Ako prvý upravíme model používateľa - protected/models/User.php. ::
          return ($this->getHash($password) == $this->_oldPassword);
       }
    }
-
-^^^^^^^^^^^^^^^
-Site Controller
-^^^^^^^^^^^^^^^
-
-
 
 ^^^^^^^^^^^^^^^^^^^
 Prihlasovanie v Yii
