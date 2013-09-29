@@ -205,6 +205,15 @@ vygenerovanú skoro celú aplikáciu.
 
 **Link na stiahnutie:** `Yii dowload <http://www.yiiframework.com/download/>`_
 
+^^^^^^
+Server
+^^^^^^
+
+Pred tým ako budeme môcť začať s tvorbou našej web appky, musíme nainštalovať
+nejaký server (pokial už nemáte). 
+
+Podrobný tutorial inštalácie nájdete `tu <http://www.premiumwebbloghosting.com/2012/03/how-to-install-apache-server-on-windows.html>`_
+
 ^^^^^^^^^^^^^^^^
 Generovanie kodu
 ^^^^^^^^^^^^^^^^
@@ -213,5 +222,38 @@ Kod je potrebne generovat v cmd/terminali, následovným spôsobom: ::
 
    php yii/framework/yiic.php webapp brmbrm
 
-Parametre príkazu sú ``<php alebo cesta k php.exe> <cesta ku yiic.php> <webapp> <miesto vygenerovania kodu>``
+Parametre príkazu sú ``<php alebo cesta k php.exe> <cesta ku yiic.php> <webapp> <miesto generovania>``
+
+Po vygenerovaní je skušobná stránka plne funkčná aj keď iba veľmi základná.
+
+^^^^^^^^^
+MVC v Yii
+^^^^^^^^^
+
+Model zabezpečuje získavanie a ukladanie dát (najčastejšie z/do databázy), 
+View je šablóna podľa ktorej sa dáta zobrazujú a Controller je akýsi hlavný 
+prvok, ktorý sa zavolá ako prvý, vytvorí potrebný model a view-u z neho odovzdá 
+vhodné dáta (prípadne odovzdá celý model). Controller taktiež vykonáva akékoľvek 
+obslužné akcie ako je odosielanie mailov, ukladanie údajov prostredníctvom 
+modelu, presmerovania, atď.
+
+MVC pekne separuje rozdielne funkcie, takže nech máte hocijako zložitý kód, 
+dá sa v ňom v pohode orientovať.
+
+^^^^^^^^^^^^
+Konfigurácia
+^^^^^^^^^^^^
+
+Defaultne je už v konfigurácii nastavená ukážková SQLite databáza a ak 
+chceme Yii len vyskúšať, môžete ju nechať tak. Pokiaľ plánujete použiť 
+vlastnú DB, zakomentujte SQLite a odkomentujte MySQL (alebo tam dáme inú db).
+
+Naša defaultna db je v ``/protected/data/testdrive.db`` v ktorej je základná tabuľka
+a aj nejaké dáta. My si ju však narhneme po svojom a to pomocou firefox doplnku,
+ktorý nájdete `tu <https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/>`_
+
+Konfigurácia je v súbore ``/protected/config/main.php``, kde treba odkomentovať 
+aj "Gii" (modul generátora kódu) a nastaviť prístupové heslo k nemu. Pre Gii 
+taktiež treba vypnnúť filter IP adries, ktoré k nemu môžu pristupovať 
+parametrom ``'ipFilters'=>array('*'),`` ak k nemu nepristupujete iba z localhostu.
 
