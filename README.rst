@@ -462,5 +462,17 @@ cez Yii::App()->user. ::
       }
    }
 
+Nakoniec do konfigurácie protected/config/main.php musíme ešte pridať jeden riadok, 
+aby sa používal náš WebUser namiesto defaultej implementácie ::
+
+   ...
+   'components'=>array(
+      'user'=>array(
+         'allowAutoLogin'=>true,
+         'class' => 'WebUser', // tento riadok treba pridat
+      ),
+   ...
+
+A teraz už len stačí dať do našej db skušobnéhu usera a skúsiť sa s ním prihlásiť.
 
 
