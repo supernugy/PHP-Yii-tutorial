@@ -50,9 +50,9 @@ Inštalácia PHP
 Deklarace PHP skriptu
 ^^^^^^^^^^^^^^^^^^^^^
 
-PHP skript sa delkaruje pomocou ``<?php nějaký PHP skript ?>`` ako to môžeme vidieť aj na
+PHP skript sa delkaruje pomocou ``<?php nejaký PHP skript ?>`` ako to môžeme vidieť aj na
 predošlom príklade. Tento spôsob delkarácie je najpoužívaniejší ale dá sa to robit 
-aj pomocou ``<? nějaký PHP skript ?>``.
+aj pomocou ``<? nejaký PHP skript ?>``.
 
 ^^^^^^^^
 Premenné
@@ -210,15 +210,15 @@ Server
 ^^^^^^
 
 Pred tým ako budeme môcť začať s tvorbou našej web appky, musíme nainštalovať
-nejaký server (pokial už nemáte). 
+nejaký server (pokial už nemáte). Tu budeme používať Apache.
 
 Podrobný tutorial inštalácie nájdete `tu <http://www.premiumwebbloghosting.com/2012/03/how-to-install-apache-server-on-windows.html>`_
 
-^^^^^^^^^^^^^^^^
-Generovanie kodu
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
+Generovanie aplikácie
+^^^^^^^^^^^^^^^^^^^^^
 
-Kod je potrebne generovat v cmd/terminali, následovným spôsobom: ::
+Skušobnú aplikáciu je potrebne generovat v cmd/terminali, následovným spôsobom: ::
 
    php yii/framework/yiic.php webapp brmbrm
 
@@ -257,3 +257,12 @@ aj "Gii" (modul generátora kódu) a nastaviť prístupové heslo k nemu. Pre Gi
 taktiež treba vypnnúť filter IP adries, ktoré k nemu môžu pristupovať 
 parametrom ``'ipFilters'=>array('*'),`` ak k nemu nepristupujete iba z localhostu.
 
+^^^^^^^^^^^^^^^^
+Generovanie kodu
+^^^^^^^^^^^^^^^^
+
+Gii (generátor kodu) nájdete na adrese `<http://localhost/test_app/index.php?r=gii>`_ , kde treba zadať zvolené heslo.
+Následne sa preklikneme do Model Generator. Tu si vygenerujeme modely zodpovedajúce tabuľkám našej db aj s prípadnými reláciami.
+Čiže ak máme v db tabuľku s názvom ``users`` tak ju napíšeme do kolonky ``Table Name`` klikneme na ``Preview``
+a potom ``Generate``. A máme model pre našu tabuľku. Ak máme viacero tabuliek ktoré chceme výužívať tak urobíme to
+isté aj pre ne.
