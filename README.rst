@@ -244,18 +244,18 @@ dá sa v ňom v pohode orientovať.
 Konfigurácia
 ^^^^^^^^^^^^
 
+Konfigurácia je v súbore ``/protected/config/main.php``, kde treba odkomentovať 
+aj "Gii" (modul generátora kódu) a nastaviť prístupové heslo k nemu. Pre Gii 
+taktiež treba vypnúť filter IP adries, ktoré k nemu môžu pristupovať 
+parametrom ``'ipFilters'=>array('*'),`` ak k nemu nepristupujete iba z localhostu.
+
 Defaultne je už v konfigurácii nastavená ukážková SQLite databáza a ak 
 chceme Yii len vyskúšať, môžete ju nechať tak. Pokiaľ plánujete použiť 
 vlastnú DB, zakomentujte SQLite a odkomentujte MySQL (alebo tam dáme inú db).
 
 Naša defaultna db je v ``/protected/data/testdrive.db`` v ktorej je základná tabuľka
 a aj nejaké dáta. My si ju však narhneme po svojom a to pomocou firefox doplnku,
-ktorý nájdete `tu <https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/>`_
-
-Konfigurácia je v súbore ``/protected/config/main.php``, kde treba odkomentovať 
-aj "Gii" (modul generátora kódu) a nastaviť prístupové heslo k nemu. Pre Gii 
-taktiež treba vypnnúť filter IP adries, ktoré k nemu môžu pristupovať 
-parametrom ``'ipFilters'=>array('*'),`` ak k nemu nepristupujete iba z localhostu.
+ktorý nájdete tu: `SQLite Manager <https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/>`_
 
 Nakoniec si nastavíme základného UrlManagera lebo defaultné ulr sú nechutné. ::
 
