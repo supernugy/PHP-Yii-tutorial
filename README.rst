@@ -244,8 +244,8 @@ dá sa v ňom v pohode orientovať.
 Konfigurácia
 ^^^^^^^^^^^^
 
-Konfigurácia je v súbore ``/protected/config/main.php``, kde treba odkomentovať 
-aj "Gii" (modul generátora kódu) a nastaviť prístupové heslo k nemu. Pre Gii 
+Konfigurácia je v súbore ``/protected/config/main.php``, kde treba odkomentovať
+"Gii" (modul generátora kódu) a nastaviť prístupové heslo k nemu. Pre Gii 
 taktiež treba vypnúť filter IP adries, ktoré k nemu môžu pristupovať 
 parametrom ``'ipFilters'=>array('*'),`` ak k nemu nepristupujete iba z localhostu.
 
@@ -336,7 +336,7 @@ V tomto pohľade je definovaný formulár prihlásenia, ktorý používa nejakú
 záhadnú premennú ``$model``. Táto premenná je definovaná v controlleri v akcii login.
 Odtial bola poslaná do pohľadu spomínanou metodou ``render``.
 
-Mohli sme si všimnút, že keď sa menú stránka tak sa mení len určitá časť stránky. 
+Mohli sme si všimnút, že keď sa mení stránka tak sa mení len určitá časť stránky. 
 Je to spôsobené tým, že všetky pohľady controllerov sa vykresľujú do nejakého 
 layoutu. V tomto prípade je to layout ``\protected\views\layouts\main.php``.
 
@@ -352,13 +352,6 @@ V tejto triede sú dôležité:
    * pravidlá (rules)
    * attributeLabels (ok tak toto nie je až také dôležite, ale je dobre to mať)
 
-Keď si otvoríme login stránku tak uvidíme, že od nás chce username. Lenže my sa 
-neskôr budeme chciet prihlasovať cez email, tak v tejto triede by sme mali
-zmeniť všetky vyskyty username na email. Lenže mnohí programátori sú lenivý 
-a nevadí im menšia nekonzistencie kodu, preto môžeme urobiť malý 'hack' a to
-tým že ku ``attributeLabels`` pridáme ``'username'=>'Email',`` aby nám formulár
-zobrazoval že chce email. Toto neovplyvní samotnú implementáciu prihlasovania cez 
-email kedže overovanie input dát sa deje mimo formulára.
 
 Keď už máme triedu formulára dokončenú tak musíme vytvoriť v controlleri vytvoriť
 jej inštanciu, napr: ``$model=new LoginForm``. Následne sa pošle to pohľadu v ktorom
@@ -413,12 +406,12 @@ Na konci každého formulára by mal byť submit button: ``echo CHtml::submitBut
 Po jeho stlačení sa opäť vykoná akcia ``actionLogin`` lenže s iným priebehom: ::
 
    if(isset($_POST['LoginForm']))
-	{
-		$model->attributes=$_POST['LoginForm'];
-		// validate user input and redirect to the previous page if valid
-		if($model->validate() && $model->login())
-			$this->redirect(Yii::app()->user->returnUrl);
-	}
+   {
+      $model->attributes=$_POST['LoginForm'];
+      // validate user input and redirect to the previous page if valid
+      if($model->validate() && $model->login())
+         $this->redirect(Yii::app()->user->returnUrl);
+   }
 
 Tento kod sa vykonáva ak sa v superglobálnej premennej $_POST nachádzaju dáta s indexom
 'LoginForm' (presný názov triedy). Tento prípad nastane len po submitnutí formulára.
@@ -641,8 +634,8 @@ Na tento účel si vytvoríme novú stranku, kde si budeme moct zmeniť osobné 
 Vytvorenie akcie
 """"""""""""""""
 
-Pred tým než budeme moct vytvoriť nový akciu budeme potrebovať nový formulár 
-aj pohľad. Začneme formulárom.
+Pred tým než budeme moct vytvoriť novú akciu budeme potrebovať nový formulár 
+a pohľad. Začneme formulárom.
 
 Vytvoríme si ``UserInfoForm.php`` s kodom: ::
 
@@ -662,9 +655,6 @@ Vytvoríme si ``UserInfoForm.php`` s kodom: ::
          );
       }
 
-      /**
-       * Declares attribute labels.
-       */
       public function attributeLabels()
       {
          return array(
@@ -809,5 +799,10 @@ menších úloh:
 
 Poznámky: pri vytvárani nového usera použijeme metodu ``save()`` namiesto ``update()``.
 
+---------------
+Dodatočné linky
+---------------
 
-
+ * `Yii dokumentácia <http://www.yiiframework.com/doc/>`_
+ * `PHP dokumentácia <http://php.net/docs.php>`_
+ * Yii plugin pre Eclipse: `Yiiclipse <http://yiiclipse.maziarz.org/>`_
